@@ -15,7 +15,8 @@ print(realm_details)
 #response = KeycloakRealm(auth).delete_realm('test')
 #print(response.status_code)
 
-client_config = ClientConfig(clientId='test', name='test_client', description='Test Client', rootUrl='http://test.example.com')
+#client_config = ClientConfig(clientId='test', name='test_client', description='Test Client', rootUrl='http://test.example.com')
+client_config = ClientConfig(clientId='test')
 
 response = KeycloakClient(auth).create_client("test", client_config)
 print(response.status_code)

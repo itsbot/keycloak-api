@@ -18,7 +18,7 @@ class KeycloakClient:
 
 
 class ClientConfig:
-    def __init__(self, clientId, name, description, rootUrl):
+    def __init__(self, clientId, name="", description="", rootUrl=""):
         self.clientId = clientId
         self.name = name
         self.description = description
