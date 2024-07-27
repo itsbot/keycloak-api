@@ -1,31 +1,39 @@
 import unittest
-from base_test import BaseTestKeycloak
+from keycloakapi.utils.auth import KeycloakAuth
 from keycloakapi import KeycloakRealm
 
-class TestKeycloakRealm(BaseTestKeycloak):
+class TestKeycloakRealm(unittest.TestCase):
     def setUp(self):
-        super().setUp()
-        self.realms = KeycloakRealm(self.auth)
+        base_url = "http://localhost:8080"
+        realm = "master"
+        username = "admin"
+        password = "admin"
+        
+        self.auth = KeycloakAuth(base_url, realm, username, password)
+        self.token = self.auth.get_token()
 
     def test_create_realm(self):
         # Create the realm
-        response = self.realms.create_realm('example_realm', 'Example Realm')
-        self.assertEqual(response['realm'], 'example_realm')
+        response = KeycloakRealm(self.auth).create_realm('dev')
+        print(f"Creare Realm Response: {response}")
+        self.assertEqual(response.status_code, 201)
 
-        # Verify the realm exists
-        realm_exists = self.realms.get_realm('example_realm')
-        self.assertIsNotNone(realm_exists)
+        response = KeycloakRealm(self.auth).create_realm('staging')
+        self.assertEqual(response.status_code, 201)
 
-        # Clean up by deleting the realm
-        self.realms.delete_realm('example_realm')
-
+        response = KeycloakRealm(self.auth).create_realm('prod')
+        self.assertEqual(response.status_code, 201)
+    
     def test_delete_realm(self):
-        # Create the realm to ensure it exists
-        self.realms.create_realm('example_realm', 'Example Realm')
-
         # Delete the realm
-        self.realms.delete_realm('example_realm')
+        response = KeycloakRealm(self.auth).delete_realm('dev')
+        self.assertEqual(response.status_code, 204)
 
+        response = KeycloakRealm(self.auth).delete_realm('staging')
+        self.assertEqual(response.status_code, 204)
+
+        response = KeycloakRealm(self.auth).delete_realm('prod')
+        self.assertEqual(response.status_code, 204)
 
 if __name__ == '__main__':
     unittest.main()

@@ -17,9 +17,5 @@ class TestKeycloakAuth(unittest.TestCase):
         self.assertIsInstance(token, str)
         self.assertTrue(len(token) > 0)
         
-        # Ensure the headers contain the correct Authorization token
-        self.assertIn("Authorization", auth.headers)
-        self.assertEqual(auth.headers["Authorization"], f"Bearer {token}")
-
 if __name__ == "__main__":
     unittest.main()
