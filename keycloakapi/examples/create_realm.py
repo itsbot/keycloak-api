@@ -1,4 +1,3 @@
-from time import sleep
 from keycloakapi import KeycloakAuth
 from keycloakapi import KeycloakRealm
 
@@ -8,8 +7,8 @@ print(auth.get_token())
 response = KeycloakRealm(auth).create_realm('test')
 print(response.status_code)
 
-response = KeycloakRealm(auth).get_realm('test')
-print(response)
+realm_details = KeycloakRealm(auth).get_realm('test')
+print(realm_details)
 
 response = KeycloakRealm(auth).delete_realm('test')
 print(response.status_code)
