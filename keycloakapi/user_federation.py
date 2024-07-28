@@ -12,6 +12,24 @@ class KeycloakUserFederation:
         config_dict['config'] = userFederation_config.config.to_dict()
         response = requests.post(url, headers=self.auth.get_headers(), json=config_dict)
         return response
+    
+    def delete_userFederation(self, realm_name, userFederation_name):
+        component = self.get_userFederation(realm_name, userFederation_name)
+        if component:
+            component_id = component["id"]
+            url = f"{self.auth.base_url}/admin/realms/{realm_name}/components/{component_id}"
+            response = requests.delete(url, headers=self.auth.get_headers())
+            return response
+    
+    # Get a singular userFederation in a realm
+    def get_userFederation(self, realm_name, userFederation_name):
+        url = f"{self.auth.base_url}/admin/realms/{realm_name}/components"
+        response = requests.get(url, headers=self.auth.get_headers())
+        if response.status_code == 200:
+            components = response.json()
+            for component in components:
+                if component["name"] == userFederation_name:
+                    return component
 
 class Config:
     def __init__(self, initial_config):

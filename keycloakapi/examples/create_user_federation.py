@@ -32,9 +32,14 @@ response = KeycloakUserFederation(auth).create_userFederation('test', userFedera
 print(response.status_code)
 print(response)
 
-url = f"{auth.base_url}/admin/realms/test/components"
-headers = auth.get_headers()
-response = requests.get(url, headers=headers)
-print(response.status_code)
-print(json.dumps(response.json(), indent=4))
+# url = f"{auth.base_url}/admin/realms/test/components"
+# headers = auth.get_headers()
+# response = requests.get(url, headers=headers)
+# print(response.status_code)
+# print(json.dumps(response.json(), indent=4))
 
+response = KeycloakUserFederation(auth).get_userFederation('test', 'idm')
+print(response)
+
+#response = KeycloakUserFederation(auth).delete_userFederation('test', 'idm')
+#print(response)
