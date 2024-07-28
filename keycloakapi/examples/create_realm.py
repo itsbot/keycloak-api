@@ -19,5 +19,18 @@ print(realm_details)
 client_config = ClientConfig(clientId='test')
 
 response = KeycloakClient(auth).create_client("test", client_config)
+print("Create client: ")
 print(response.status_code)
+print(response)
+
+clients = KeycloakClient(auth).get_clients("test")
+print("Get clients: ")
+print(clients)
+
+client = KeycloakClient(auth).get_client("test", "test")
+print("Get client: ")
+print(client)
+
+response = KeycloakClient(auth).delete_client("test", "test")
+print("Delete client: ")
 print(response)

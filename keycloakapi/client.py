@@ -4,6 +4,7 @@ class KeycloakClient:
     def __init__(self, auth):
         self.auth = auth
 
+    # Create a client
     def create_client(self, realm_name, client_config):
         url = f"{self.auth.base_url}/admin/realms/{realm_name}/clients"
         data = {
@@ -15,7 +16,31 @@ class KeycloakClient:
         response = requests.post(url, headers=self.auth.get_headers(), json=data)
         return response
 
+    # Delete a client. Deleting requires the client id, not the client name
+    def delete_client(self, realm_name, client_name):
+        client = self.get_client(realm_name, client_name)
+        if client:
+            client_id = client["id"]
+            url = f"{self.auth.base_url}/admin/realms/{realm_name}/clients/{client_id}"
+            response = requests.delete(url, headers=self.auth.get_headers())
+            return response
 
+    # Get a singular client in a realm
+    def get_client(self, realm_name, client_name):
+        url = f"{self.auth.base_url}/admin/realms/{realm_name}/clients"
+        response = requests.get(url, headers=self.auth.get_headers())
+        if response.status_code == 200:
+            clients = response.json()
+            for client in clients:
+                if client["clientId"] == client_name:
+                    return client
+        return None
+
+    # Get all clients in a realm
+    def get_clients(self, realm_name):
+        url = f"{self.auth.base_url}/admin/realms/{realm_name}/clients"
+        response = requests.get(url, headers=self.auth.get_headers())
+        return response.json()
 
 class ClientConfig:
     def __init__(self, clientId, name="", description="", rootUrl=""):
