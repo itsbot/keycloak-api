@@ -15,7 +15,7 @@ class TestKeycloakRealm(unittest.TestCase):
     def test_create_realm(self):
         # Create the realm
         response = KeycloakRealm(self.auth).create_realm('dev')
-        print(f"Creare Realm Response: {response}")
+        print(f"Create Realm Response: {response}")
         self.assertEqual(response.status_code, 201)
 
         response = KeycloakRealm(self.auth).create_realm('staging')
