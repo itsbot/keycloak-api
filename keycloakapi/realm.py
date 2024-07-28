@@ -29,4 +29,18 @@ class KeycloakRealm:
         response.raise_for_status()
         return response.json()
     
+    def get_realm_id(self, realm_name):
+        realm = self.get_realm(realm_name)
+        realm_id = realm.get('id')
+        return realm_id
+    
+    def get_realms(self):
+        url = f"{self.auth.base_url}/admin/realms"
+        response = requests.get(url, headers=self.auth.get_headers())
+        response.raise_for_status()
+        return response.json()
+    
+    # TODO: Implement update_realm
+
+    # TODO: support entire configuration for a realm
     # Realm configuration dictionary

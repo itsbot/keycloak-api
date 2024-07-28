@@ -9,14 +9,8 @@ auth = KeycloakAuth(base_url='http://localhost:8080', realm='master', username='
 KeycloakRealm(auth).create_realm('test')
 
 # Fetch the realm ID
-realm_url = f"{auth.base_url}/admin/realms/test"
-headers = auth.get_headers()
-realm_response = requests.get(realm_url, headers=headers)
-realm_id = realm_response.json().get('id')
-
-# Ensure realm ID is fetched correctly
-if not realm_id:
-    raise ValueError("Failed to fetch realm ID")
+realm_id = KeycloakRealm(auth).get_realm_id('test')
+print("realm_id:", realm_id)
 
 userFederation = UserFederationConfig()
 userFederation.name = "idm"
