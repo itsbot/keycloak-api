@@ -2,6 +2,8 @@ from keycloakapi import KeycloakAuth
 from keycloakapi import KeycloakRealm
 from keycloakapi import UserFederationConfig
 from keycloakapi.user_federation import KeycloakUserFederation
+from keycloakapi.user_federation import UserAttributeLDAPMapperConfig
+
 import requests
 import json
 
@@ -37,3 +39,27 @@ print(response)
 
 #response = KeycloakUserFederation(auth).delete_userFederation('test', 'idm')
 #print(response)
+
+userFederationid = response['id']
+print("User federation ID: ", userFederationid)
+
+
+config = {
+    "config": {
+        "user.model.attribute": ["test"],
+        "ldap.attribute": ["test"],
+        "read.only": ["true"],
+        "always.read.value.from.ldap": ["true"],
+        "is.mandatory.in.ldap": ["true"],
+        "attribute.default.value": [],
+        "is.binary.attribute": ["false"]
+    },
+    "name": "test",
+    "providerId": "user-attribute-ldap-mapper",
+    "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+    "parentId": userFederationid
+}
+
+response = KeycloakUserFederation(auth).create_mapper('test', config)
+
+print(response)

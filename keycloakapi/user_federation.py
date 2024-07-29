@@ -1,5 +1,6 @@
 import requests
 from dataclasses import dataclass, field
+from typing import Dict
 
 class KeycloakUserFederation:
     def __init__(self, auth):
@@ -30,6 +31,15 @@ class KeycloakUserFederation:
             for component in components:
                 if component["name"] == userFederation_name:
                     return component
+    
+    # This only works with manually passing in the config
+    # TODO: support the config way it is for create_userFederation
+    def create_mapper(self, realm_name, mapper_config):
+        url = f"{self.auth.base_url}/admin/realms/{realm_name}/components"
+        #config_dict = mapper_config.__dict__.copy()
+        #config_dict['config'] = mapper_config.config.to_dict()
+        response = requests.post(url, headers=self.auth.get_headers(), json=mapper_config)
+        return response
 
 class Config:
     def __init__(self, initial_config):
@@ -105,58 +115,45 @@ class UserFederationConfig:
         "useKerberosForPasswordAuthentication": ["false"]
     }))
 
-#     {
-#     "name": "ldap",
-#     "providerId": "ldap",
-#     "providerType": "org.keycloak.storage.UserStorageProvider",
-#     "parentId": "0620dce6-83fd-47a6-8d51-914ff891f100",
+
+# user-attribute-ldap-mapper
+# {
 #     "config": {
-#         "enabled": ["true"],
-#         "priority": ["0"],
-#         "fullSyncPeriod": ["-1"],
-#         "changedSyncPeriod": ["-1"],
-#         "cachePolicy": ["DEFAULT"],
-#         "evictionDay": [],
-#         "evictionHour": [],
-#         "evictionMinute": [],
-#         "maxLifespan": [],
-#         "batchSizeForSync": ["1000"],
-#         "editMode": ["WRITABLE"],
-#         "importEnabled": ["true"],
-#         "syncRegistrations": ["false"],
-#         "vendor": ["rhds"],
-#         "usePasswordModifyExtendedOp": [],
-#         "usernameLDAPAttribute": ["uid"],
-#         "rdnLDAPAttribute": ["uid"],
-#         "uuidLDAPAttribute": ["nsuniqueid"],
-#         "userObjectClasses": ["inetOrgPerson, organizationalPerson"],
-#         "connectionUrl": ["ldaps://ldap.example.com"],
-#         "usersDn": ["ou=users,dc=example,dc=com"],
-#         "authType": ["simple"],
-#         "startTls": [],
-#         "bindDn": ["bind.svc"],
-#         "bindCredential": ["password"],
-#         "customUserSearchFilter": [],
-#         "searchScope": ["1"],
-#         "validatePasswordPolicy": ["false"],
-#         "trustEmail": ["false"],
-#         "useTruststoreSpi": ["ldapsOnly"],
-#         "connectionPooling": ["true"],
-#         "connectionPoolingAuthentication": [],
-#         "connectionPoolingDebug": [],
-#         "connectionPoolingInitSize": [],
-#         "connectionPoolingMaxSize": [],
-#         "connectionPoolingPrefSize": [],
-#         "connectionPoolingProtocol": [],
-#         "connectionPoolingTimeout": [],
-#         "connectionTimeout": [],
-#         "readTimeout": [],
-#         "pagination": ["true"],
-#         "allowKerberosAuthentication": ["false"],
-#         "serverPrincipal": [],
-#         "keyTab": [],
-#         "kerberosRealm": [],
-#         "debug": ["false"],
-#         "useKerberosForPasswordAuthentication": ["false"]
-#     }
+#         "user.model.attribute": ["test"],
+#         "ldap.attribute": ["test"],
+#         "read.only": ["true"],
+#         "always.read.value.from.ldap": ["true"],
+#         "is.mandatory.in.ldap": ["true"],
+#         "attribute.default.value": [],
+#         "is.binary.attribute": ["false"]
+#     },
+#     "name": "test",
+#     "providerId": "user-attribute-ldap-mapper",
+#     "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+#     "parentId": "6758d9d3-cb9d-4c2c-8a63-48822309cacc"
+# }
+
+# group-ldap-mapper
+# {
+#     "config": {
+#         "groups.dn": ["ou=group,dc=example,dc=com"],
+#         "group.name.ldap.attribute": ["cn"],
+#         "group.object.classes": ["groupOfNames"],
+#         "preserve.group.inheritance": ["true"],
+#         "ignore.missing.groups": ["false"],
+#         "membership.ldap.attribute": ["member"],
+#         "membership.attribute.type": ["DN"],
+#         "membership.user.ldap.attribute": ["uid"],
+#         "groups.ldap.filter": [],
+#         "mode": ["LDAP_ONLY"],
+#         "user.roles.retrieve.strategy": ["LOAD_GROUPS_BY_MEMBER_ATTRIBUTE"],
+#         "memberof.ldap.attribute": ["memberOf"],
+#         "mapped.group.attributes": [],
+#         "drop.non.existing.groups.during.sync": ["false"],
+#         "groups.path": ["/"]
+#     },
+#     "name": "group",
+#     "providerId": "group-ldap-mapper",
+#     "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+#     "parentId": "6758d9d3-cb9d-4c2c-8a63-48822309cacc"
 # }
