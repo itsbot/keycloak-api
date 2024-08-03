@@ -53,7 +53,7 @@ class KeycloakUserFederation:
     def get_mapper(self, realm_name, mapper_name):
         return self.get_userFederation(realm_name, mapper_name)
     
-    def full_sync(self, realm_name, userFederation_name):
+    def sync_full(self, realm_name, userFederation_name):
         component = self.get_userFederation(realm_name, userFederation_name)
         if component:
             component_id = component["id"]
@@ -61,7 +61,7 @@ class KeycloakUserFederation:
             response = requests.post(url, headers=self.auth.get_headers())
             return response
     
-    def changed_sync(self, realm_name, userFederation_name):
+    def sync_changed(self, realm_name, userFederation_name):
         component = self.get_userFederation(realm_name, userFederation_name)
         if component:
             component_id = component["id"]
