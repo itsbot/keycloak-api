@@ -52,6 +52,38 @@ class KeycloakUserFederation:
 
     def get_mapper(self, realm_name, mapper_name):
         return self.get_userFederation(realm_name, mapper_name)
+    
+    def full_sync(self, realm_name, userFederation_name):
+        component = self.get_userFederation(realm_name, userFederation_name)
+        if component:
+            component_id = component["id"]
+            url = f"{self.auth.base_url}/admin/realms/{realm_name}/user-storage/{component_id}/sync?action=triggerFullSync"
+            response = requests.post(url, headers=self.auth.get_headers())
+            return response
+    
+    def changed_sync(self, realm_name, userFederation_name):
+        component = self.get_userFederation(realm_name, userFederation_name)
+        if component:
+            component_id = component["id"]
+            url = f"{self.auth.base_url}/admin/realms/{realm_name}/user-storage/{component_id}/sync?action=triggerChangedUsersSync"
+            response = requests.post(url, headers=self.auth.get_headers())
+            return response
+        
+    def remove_imported_users(self, realm_name, userFederation_name):
+        component = self.get_userFederation(realm_name, userFederation_name)
+        if component:
+            component_id = component["id"]
+            url = f"{self.auth.base_url}/admin/realms/{realm_name}/user-storage/{component_id}/remove-imported-users"
+            response = requests.post(url, headers=self.auth.get_headers())
+            return response
+    
+    def unlink_users(self, realm_name, userFederation_name):
+        component = self.get_userFederation(realm_name, userFederation_name)
+        if component:
+            component_id = component["id"]
+            url = f"{self.auth.base_url}/admin/realms/{realm_name}/user-storage/{component_id}/unlink-users"
+            response = requests.post(url, headers=self.auth.get_headers())
+            return response
 
 class Config:
     def __init__(self, initial_config):
