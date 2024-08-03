@@ -1,8 +1,7 @@
 from keycloakapi import KeycloakAuth
 from keycloakapi import KeycloakRealm
 from keycloakapi import UserFederationConfig
-from keycloakapi.user_federation import KeycloakUserFederation
-#from keycloakapi.user_federation import UserAttributeLDAPMapperConfig
+from keycloakapi import KeycloakUserFederation
 
 import requests
 import json
