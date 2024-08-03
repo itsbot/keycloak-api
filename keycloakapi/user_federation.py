@@ -40,6 +40,18 @@ class KeycloakUserFederation:
         #config_dict['config'] = mapper_config.config.to_dict()
         response = requests.post(url, headers=self.auth.get_headers(), json=mapper_config)
         return response
+    
+    # TODO: Change to 'Componenet' to avoid repeating code
+    def delete_mapper(self, realm_name, mapper_name):
+        component = self.get_mapper(realm_name, mapper_name)
+        if component:
+            mapper_id = component["id"]
+            url = f"{self.auth.base_url}/admin/realms/{realm_name}/components/{mapper_id}"
+            response = requests.delete(url, headers=self.auth.get_headers())
+            return response
+
+    def get_mapper(self, realm_name, mapper_name):
+        return self.get_userFederation(realm_name, mapper_name)
 
 class Config:
     def __init__(self, initial_config):
