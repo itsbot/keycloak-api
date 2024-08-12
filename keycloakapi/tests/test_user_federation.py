@@ -23,7 +23,7 @@ class TestUserFederation(unittest.TestCase):
         KeycloakRealm(cls.auth).delete_realm('test')
         print("Realm deleted")
 
-    def test_acreate_user_federation(self):
+    def test_1create_user_federation(self):
         realm_id = KeycloakRealm(self.auth).get_realm_id('test')
         userFederation = UserFederationConfig()
         userFederation.name = "idm"
@@ -35,11 +35,11 @@ class TestUserFederation(unittest.TestCase):
         response = KeycloakUserFederation(self.auth).create_userFederation('test', userFederation)
         self.assertEqual(response.status_code, 201)
 
-    def test_bget_user_federation(self):
+    def test_2get_user_federation(self):
         component = KeycloakUserFederation(self.auth).get_userFederation('test', 'idm')
         self.assertEqual(component['name'], 'idm')
 
-    def test_ccreate_mapper(self):
+    def test_3create_mapper(self):
         response = KeycloakUserFederation(self.auth).get_userFederation('test', 'idm')
         userFederationid = response['id']
         config = {
@@ -61,7 +61,7 @@ class TestUserFederation(unittest.TestCase):
         self.assertEqual(response.status_code, 201)
 
     
-    def test_ddelete_mapper(self):
+    def test_4delete_mapper(self):
         response = KeycloakUserFederation(self.auth).delete_mapper('test', 'test')
         self.assertEqual(response.status_code, 204)
 
