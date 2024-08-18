@@ -6,3 +6,4 @@ from .roles import KeycloakRoles
 from .user_federation import KeycloakUserFederation
 from .user_federation import UserFederationConfig
 from .authentication import KeycloakAuthentication
+from .client_scope import KeycloakClientScope
