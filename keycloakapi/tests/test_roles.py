@@ -36,7 +36,17 @@ class TestRoles(unittest.TestCase):
         print(role)
         self.assertEqual(role['name'], 'test_role')
 
-    def test_4delete_role(self):
+    def test_4update_role(self):
+        role = KeycloakRoles(self.auth).get_role('test', 'test_role')
+        role['description'] = 'Test Role description'
+        role['attributes'] = {
+            'key1': ['value1'],
+            'key2': ['value2']
+        }
+        response = KeycloakRoles(self.auth).update_role('test', 'test_role', role)
+        print(response)
+
+    def test_5delete_role(self):
         response = KeycloakRoles(self.auth).delete_role('test', 'test_role')
         print(response)
         self.assertEqual(response.status_code, 204)

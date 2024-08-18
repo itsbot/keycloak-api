@@ -30,3 +30,13 @@ class KeycloakRoles:
         url = f"{self.auth.base_url}/admin/realms/{realm_name}/roles/{role_name}"
         response = requests.delete(url, headers=self.auth.get_headers())
         return response
+    
+    def update_role(self, realm_name, role_name, role_config):
+        role = self.get_role(realm_name, role_name)
+        if role:
+            role_id = role["id"]
+            url = f"{self.auth.base_url}/admin/realms/{realm_name}/roles-by-id/{role_id}"
+            data = role_config
+            response = requests.put(url, headers=self.auth.get_headers(), json=data)
+            response.raise_for_status()
+            return response
