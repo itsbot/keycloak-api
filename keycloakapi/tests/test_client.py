@@ -21,7 +21,7 @@ class TestKeycloakRealm(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        #KeycloakRealm(cls.auth).delete_realm('test')
+        KeycloakRealm(cls.auth).delete_realm('test')
         print("Realm deleted")
 
     def test_1create_client_blank(self):
