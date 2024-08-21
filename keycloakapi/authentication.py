@@ -34,7 +34,21 @@ class KeycloakAuthentication:
             url = f"{self.auth.base_url}/admin/realms/{realm_name}/authentication/flows/{flow_id}"
             response = requests.delete(url, headers=self.auth.get_headers())
             return response
-
+        
+    def create_flow(self, realm_name, flow_alias, flow_type, flow_config=None):
+        url = f"{self.auth.base_url}/admin/realms/{realm_name}/authentication/flows"
+        if flow_config is None:
+            data = {
+                "alias": flow_alias,
+                "description": "",
+                "providerId": flow_type, # client-flow or basic-flow
+                "topLevel": True,
+                "builtIn": False,
+            }
+        else:
+            data = flow_config
+        response = requests.post(url, headers=self.auth.get_headers(), json=data)
+        return response
 
 # {
 #     "id": "184b7a3b-f2f3-416b-bcef-52d54a694f6e",
