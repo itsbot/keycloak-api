@@ -22,7 +22,7 @@ class KeycloakAuthentication:
                     return flow
         return response
 
-    def get_flows(self, realm_name, flow_alias):
+    def get_flows(self, realm_name):
         url = f"{self.auth.base_url}/admin/realms/{realm_name}/authentication/flows"
         response = requests.get(url, headers=self.auth.get_headers())
         return response.json()
