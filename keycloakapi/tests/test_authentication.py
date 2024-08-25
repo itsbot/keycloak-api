@@ -19,7 +19,7 @@ class TestAuthentication(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        KeycloakRealm(cls.auth).delete_realm('test')
+        #KeycloakRealm(cls.auth).delete_realm('test')
         print("Realm deleted")
 
     def test_1copy_flow(self):
@@ -46,3 +46,30 @@ class TestAuthentication(unittest.TestCase):
         self.assertEqual(response.status_code, 201)
 
     
+    def test_7add_execution_full(self):
+        execution_config = {
+            "provider": "no-cookie-redirect"
+        }
+        response = KeycloakAuthentication(self.auth).add_execution("test", "test-flow", execution_config)
+        self.assertEqual(response.status_code, 201)
+    
+    def test_9add_flowfull(self):
+        execution_config = {
+            "alias": "flow-alias",
+            "type": "basic-flow",
+            "description": "flow description"
+        }
+        response = KeycloakAuthentication(self.auth).add_flow("test", "test-flow", execution_config)
+        self.assertEqual(response.status_code, 201)
+
+    def test_get_authenticator_providers(self):
+        response = KeycloakAuthentication(self.auth).get_authenticator_providers("test")
+        self.assertIsNotNone(response)
+
+    def test_get_authenticator_providers(self):
+        response = KeycloakAuthentication(self.auth).get_authenticator_providers("test")
+        self.assertIsNotNone(response)
+
+    def test_get_executions(self):
+        response = KeycloakAuthentication(self.auth).get_executions("test", "browser")
+        self.assertIsNotNone(response)

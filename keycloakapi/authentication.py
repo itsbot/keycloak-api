@@ -50,6 +50,32 @@ class KeycloakAuthentication:
         response = requests.post(url, headers=self.auth.get_headers(), json=data)
         return response
 
+    def add_execution(self, realm_name, flow_alias, execution_config=None):
+        url = f"{self.auth.base_url}/admin/realms/{realm_name}/authentication/flows/{flow_alias}/executions/execution"
+        response = requests.post(url, headers=self.auth.get_headers(), json=execution_config)
+        return response
+
+    def add_flow(self, realm_name, flow_alias, flow_config=None):
+        url = f"{self.auth.base_url}/admin/realms/{realm_name}/authentication/flows/{flow_alias}/executions/flow"
+        response = requests.post(url, headers=self.auth.get_headers(), json=flow_config)
+        return response
+
+    def get_executions(self, realm_name, flow_alias):
+        url = f"{self.auth.base_url}/admin/realms/{realm_name}/authentication/flows/{flow_alias}/executions"
+        response = requests.get(url, headers=self.auth.get_headers())
+        return response.json()
+    
+    def get_authenticator_providers(self, realm_name):
+        url = f"{self.auth.base_url}/admin/realms/{realm_name}/authentication/authenticator-providers"
+        response = requests.get(url, headers=self.auth.get_headers())
+        return response.json()
+    
+    def get_client_authenticator_providers(self, realm_name):
+        url = f"{self.auth.base_url}/admin/realms/{realm_name}/authentication/client-authenticator-providers"
+        response = requests.get(url, headers=self.auth.get_headers())
+        return response.json()
+    
+
 # {
 #     "id": "184b7a3b-f2f3-416b-bcef-52d54a694f6e",
 #     "alias": "browser",
