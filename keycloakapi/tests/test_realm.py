@@ -77,6 +77,8 @@ class TestKeycloakRealm(unittest.TestCase):
         self.assertIsNotNone(response)
         self.assertFalse(response['enabled'])
 
+        response = KeycloakRealm(self.auth).delete_realm('test2')
+
 
 if __name__ == '__main__':
     unittest.main()
