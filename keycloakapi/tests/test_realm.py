@@ -79,6 +79,20 @@ class TestKeycloakRealm(unittest.TestCase):
 
         response = KeycloakRealm(self.auth).delete_realm('test2')
 
+    def test_8set_email_config(self):
+        realm = KeycloakRealm(self.auth).get_realm('master')
+        realm['smtpServer'] = {
+            "port": "1587",
+            "host": "smtp.example.com",
+            "ssl": "true",
+            "starttls": "",
+            "auth": "",
+            "fromDisplayName": "Example",
+            "from": "no-reply@example.com"
+        }
+
+        response = KeycloakRealm(self.auth).update_realm('master', realm)
+        self.assertEqual(response.status_code, 204)
 
 if __name__ == '__main__':
     unittest.main()
