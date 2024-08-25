@@ -19,7 +19,7 @@ class TestAuthentication(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        #KeycloakRealm(cls.auth).delete_realm('test')
+        KeycloakRealm(cls.auth).delete_realm('test')
         print("Realm deleted")
 
     def test_1copy_flow(self):
