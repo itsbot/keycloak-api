@@ -1,6 +1,23 @@
 # Keycloak API Library
 This Library is intended to work with Keycloak 18.0 or Red Hat Single Sign-On 7.6
 
+## Getting Started
+1. Clone the repository
+2. Install the requirements
+```bash
+pip install -r requirements.txt
+```
+3. Install the library
+```bash
+pip install .
+```
+4. Run the docker compose with your desired keycloak version
+```bash
+cd tests/
+docker-compose up
+```
+5. Browse to `http://localhost:8080` and login with the credentials `admin/admin`
+
 ## Project Structure
 ```
 ├── LICENSE
