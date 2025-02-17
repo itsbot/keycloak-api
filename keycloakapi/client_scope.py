@@ -51,12 +51,10 @@ class KeycloakClientScope:
             return response
         
     def add_client_scope_mapper(self, realm_name, client_scope_name, mapper_config):
-        client_scope = self.get_client_scope(realm_name, client_scope_name)
-        if client_scope:
-            client_scope_id = client_scope["id"]
-            url = f"{self.auth.base_url}/admin/realms/{realm_name}/client-scopes/{client_scope_id}/protocol-mappers/models"
-            response = requests.post(url, headers=self.auth.get_headers(), json=mapper_config)
-            return response
+        client_scope_id = self.get_client_scope_id(realm_name, client_scope_name)
+        url = f"{self.auth.base_url}/admin/realms/{realm_name}/client-scopes/{client_scope_id}/protocol-mappers/models"
+        response = requests.post(url, headers=self.auth.get_headers(), json=mapper_config)
+        return response
         
     def get_client_scope_mapper(self, realm_name, client_scope_name, mapper_name):
         client_scope = self.get_client_scope(realm_name, client_scope_name)
