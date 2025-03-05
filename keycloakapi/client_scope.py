@@ -50,10 +50,25 @@ class KeycloakClientScope:
             response = requests.put(url, headers=self.auth.get_headers(), json=client_scope_config)
             return response
         
-    def add_client_scope_mapper(self, realm_name, client_scope_name, mapper_config):
-        client_scope_id = self.get_client_scope_id(realm_name, client_scope_name)
+    def add_client_scope_mapper(self, realm_name, client_scope_id, mapper_name, user_attribute, claim_name):
         url = f"{self.auth.base_url}/admin/realms/{realm_name}/client-scopes/{client_scope_id}/protocol-mappers/models"
-        response = requests.post(url, headers=self.auth.get_headers(), json=mapper_config)
+        data = {
+            "protocol": "openid-connect",
+            "config": {
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "userinfo.token.claim": "true",
+                "multivalued": "",
+                "aggregate.attrs": "",
+                "user.attribute": user_attribute,
+                "claim.name": claim_name,
+                "jsonType.label": "String"
+            },
+            "name": mapper_name,
+            "protocolMapper": "oidc-usermodel-attribute-mapper"
+        }
+        headers = self.auth.get_headers()
+        response = requests.post(url, headers=headers, json=data)
         return response
         
     def get_client_scope_mapper(self, realm_name, client_scope_name, mapper_name):
